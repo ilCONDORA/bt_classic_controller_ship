@@ -1,0 +1,51 @@
+name: bt_classic_controller_ship
+description: "A Flutter app that connects to a Bluetooth Classic device (HC-05 and Arduino) and sends commands to control a ship."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.19.0 # localization, there's a new version but flutter_localizations must use 0.19
+  flutter_localizations: # localization
+    sdk: flutter
+  google_fonts: ^6.2.1
+  flutter_bloc: ^9.0.0
+  hydrated_bloc: ^10.0.0
+  condora_automatic_getter_storage_directory: ^1.0.1 # automatic storage directory
+  go_router: ^14.6.3 # routing/navigation
+  pie_menu: ^3.2.7 # circular menu for settings
+  currency_formatter: ^2.2.2 # get currency based on country code
+  flag: ^7.0.0 # get flag based on country code
+  window_manager: ^0.4.3 # window manager for desktop, handles minimum size, position, etc.
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  package_rename: ^1.8.0
+  icons_launcher: ^3.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - assets/
+
+# Run 'dart run package_rename' in the terminal to apply the new package information
+package_rename_config:
+  android:
+    app_name: BT Classic Controller Ship # (String) The display name of the android app
+    package_name: it.ilcondora.btclassiccontrollership # (String) The package name of the android app
+    override_old_package: # (Optional) (String) Use this to delete the old folder structure of MainActivity or to use the existing code with the new package name
+    lang: # (Optional) (String) The android development language {kotlin(default) or java}
+
+# Run 'dart run icons_launcher:create' in the terminal to generate the icons
+icons_launcher:
+  image_path: "assets/app_icon.png"
+  platforms:
+    android:
+      enable: true
