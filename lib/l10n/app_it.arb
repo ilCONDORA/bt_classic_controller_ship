@@ -36,9 +36,13 @@
   "@home_label": {
     "description": "Etichetta del pulsante di navigazione per la schermata home"
   },
-  "devices_label": "Devices",
+  "devices_label": "Dispositivi",
   "@devices_label": {
-    "description": "Etichetta del pulsante di navigazione per la schermata devices"
+    "description": "Etichetta del pulsante di navigazione per la schermata dispositivi"
+  },
+  "commands_label": "Comandi",
+  "@commands_label": {
+    "description": "Etichetta del pulsante di navigazione per la schermata comandi"
   },
   "info_label": "Info",
   "@info_label": {

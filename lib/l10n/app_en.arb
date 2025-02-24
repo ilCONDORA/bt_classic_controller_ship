@@ -40,6 +40,10 @@
   "@devices_label": {
     "description": "Label for the button for navigating to the devices screen"
   },
+  "commands_label": "Commands",
+  "@commands_label": {
+    "description": "Label for the button for navigating to the commands screen"
+  },
   "info_label": "Info",
   "@info_label": {
     "description": "Label for the button for navigating to the info screen"

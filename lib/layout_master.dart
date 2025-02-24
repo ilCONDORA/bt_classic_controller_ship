@@ -90,6 +90,8 @@ final _shellNavigatorHomeKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellHome');
 final _shellNavigatorDevicesKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellDevices');
+final _shellNavigatorCommandsKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellCommands');
 final _shellNavigatorInfoKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellInfo');
 
@@ -144,22 +146,52 @@ List<NavigationInformations> almightyGetDestinations(
         isVisible: true,
         destinationWidget: (context) => switch (navigationLayout) {
           NavigationLayout.bottomNavigation => BottomNavigationBarItem(
-              icon: const Icon(Icons.bluetooth_searching_rounded),
-              activeIcon: const Icon(Icons.bluetooth_searching_rounded),
+              icon: const Icon(Icons.bluetooth_searching_outlined),
+              activeIcon: const Icon(Icons.bluetooth_searching),
               label: AppLocalizations.of(context)!.devices_label,
             ),
           NavigationLayout.navigationRail => NavigationRailDestination(
-              icon: const Icon(Icons.bluetooth_searching_rounded),
-              selectedIcon: const Icon(Icons.bluetooth_searching_rounded),
+              icon: const Icon(Icons.bluetooth_searching_outlined),
+              selectedIcon: const Icon(Icons.bluetooth_searching),
               label: Text(AppLocalizations.of(context)!.devices_label),
             ),
           NavigationLayout.navigationDrawer => NavigationDrawerDestination(
-              icon: const Icon(Icons.bluetooth_searching_rounded),
-              selectedIcon: const Icon(Icons.bluetooth_searching_rounded),
+              icon: const Icon(Icons.bluetooth_searching_outlined),
+              selectedIcon: const Icon(Icons.bluetooth_searching),
               label: Text(AppLocalizations.of(context)!.devices_label),
             ),
           NavigationLayout.webNavigation => WebNavigationDestination(
               label: AppLocalizations.of(context)!.devices_label,
+              isVisible: true,
+            )
+        },
+        subRoutes: [],
+      ),
+      NavigationInformations(
+        shellNavigatorKey: _shellNavigatorCommandsKey,
+        path: '/commands',
+        name: 'commands',
+        label: (context) => AppLocalizations.of(context)!.commands_label,
+        screen: const Placeholder(),
+        isVisible: true,
+        destinationWidget: (context) => switch (navigationLayout) {
+          NavigationLayout.bottomNavigation => BottomNavigationBarItem(
+              icon: const Icon(Icons.dvr_outlined),
+              activeIcon: const Icon(Icons.dvr),
+              label: AppLocalizations.of(context)!.commands_label,
+            ),
+          NavigationLayout.navigationRail => NavigationRailDestination(
+              icon: const Icon(Icons.dvr_outlined),
+              selectedIcon: const Icon(Icons.dvr),
+              label: Text(AppLocalizations.of(context)!.commands_label),
+            ),
+          NavigationLayout.navigationDrawer => NavigationDrawerDestination(
+              icon: const Icon(Icons.dvr_outlined),
+              selectedIcon: const Icon(Icons.dvr),
+              label: Text(AppLocalizations.of(context)!.commands_label),
+            ),
+          NavigationLayout.webNavigation => WebNavigationDestination(
+              label: AppLocalizations.of(context)!.commands_label,
               isVisible: true,
             )
         },
