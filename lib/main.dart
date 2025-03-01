@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:condora_automatic_getter_storage_directory/condora_automatic_getter_storage_directory.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -59,7 +60,12 @@ Future<void> main() async {
     }
   }
 
-  runApp(const MainApp());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]).then((_) {
+    runApp(const MainApp());
+  });
 }
 
 /// Instead of using the default Flutter [MaterialApp] we use it's brother, [MaterialApp.router].
