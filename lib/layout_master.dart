@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pie_menu/pie_menu.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'cubits/immersive_mode/immersive_mode_cubit.dart';
 import 'web_navigation/navigation_web.dart';
 import 'web_navigation/web_navigation_destination.dart';
 import 'widgets/app_settings_menu_dialogs/pie_menu_app_settings.dart';
@@ -327,34 +329,56 @@ class LayoutMaster extends StatelessWidget {
             iconColor: Colors.white,
           ),
         ),
-        child: Scaffold(
-          key: scaffoldKey,
-          appBar: kIsWeb
-              ? _buildDynamicAppBar(
-                  context: context,
-                  scaffoldKey: scaffoldKey,
-                )
-              : null,
-          body: _buildBodyAndNavigationRail(
-            context: context,
-          ),
-          bottomNavigationBar: kIsWeb
-              ? null
-              : _buildBottomNavigationBar(
-                  context: context,
+        child: BlocBuilder<ImmersiveModeCubit, ImmersiveModeState>(
+          builder: (context, state) {
+            return Scaffold(
+              key: scaffoldKey,
+              floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
+              floatingActionButton: FloatingActionButton(
+                mini: true,
+                onPressed: () =>
+                    context.read<ImmersiveModeCubit>().toggleImmersiveMode(),
+                child: Icon(
+                  state.isImmersive ? Icons.visibility : Icons.visibility_off,
                 ),
-          drawer: useDrawerInsteadOfEndDrawer
-              ? _buildDrawerOrEndDrawer(
-                  context: context,
-                  scaffoldKey: scaffoldKey,
-                )
-              : null,
-          endDrawer: useDrawerInsteadOfEndDrawer
-              ? null
-              : _buildDrawerOrEndDrawer(
-                  context: context,
-                  scaffoldKey: scaffoldKey,
-                ),
+              ),
+              appBar: state.isImmersive
+                  ? null
+                  : kIsWeb
+                      ? _buildDynamicAppBar(
+                          context: context,
+                          scaffoldKey: scaffoldKey,
+                        )
+                      : null,
+              body: _buildBodyAndNavigationRail(
+                context: context,
+                isImmersive: state.isImmersive,
+              ),
+              bottomNavigationBar: state.isImmersive
+                  ? null
+                  : kIsWeb
+                      ? null
+                      : _buildBottomNavigationBar(
+                          context: context,
+                        ),
+              drawer: state.isImmersive
+                  ? null
+                  : useDrawerInsteadOfEndDrawer
+                      ? _buildDrawerOrEndDrawer(
+                          context: context,
+                          scaffoldKey: scaffoldKey,
+                        )
+                      : null,
+              endDrawer: state.isImmersive
+                  ? null
+                  : useDrawerInsteadOfEndDrawer
+                      ? null
+                      : _buildDrawerOrEndDrawer(
+                          context: context,
+                          scaffoldKey: scaffoldKey,
+                        ),
+            );
+          },
         ),
       ),
     );
@@ -435,9 +459,8 @@ class LayoutMaster extends StatelessWidget {
   /// When it returns only the body there's an if statement that checks if it's being executed on the web because for desktop and mobile (execpt the [NavigationRail] thing) the body is the same,
   /// only in the web version there's a [Footer] widget at the bottom of the screen.
   ///
-  Widget _buildBodyAndNavigationRail({
-    required BuildContext context,
-  }) {
+  Widget _buildBodyAndNavigationRail(
+      {required BuildContext context, required bool isImmersive}) {
     bool isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
@@ -445,21 +468,23 @@ class LayoutMaster extends StatelessWidget {
         ? Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              NavigationRail(
-                destinations: almightyGetDestinations(
-                        navigationLayout: NavigationLayout.navigationRail)
-                    .where((destination) => destination.isVisible)
-                    .map((destination) =>
-                        destination.destinationWidget!(context))
-                    .toList()
-                    .cast<NavigationRailDestination>(),
-                selectedIndex: navigationShell.currentIndex,
-                labelType: NavigationRailLabelType.all,
-                onDestinationSelected: _goToBranch,
-              ),
-              const VerticalDivider(
-                width: 1,
-              ),
+              if (!isImmersive) ...[
+                NavigationRail(
+                  destinations: almightyGetDestinations(
+                          navigationLayout: NavigationLayout.navigationRail)
+                      .where((destination) => destination.isVisible)
+                      .map((destination) =>
+                          destination.destinationWidget!(context))
+                      .toList()
+                      .cast<NavigationRailDestination>(),
+                  selectedIndex: navigationShell.currentIndex,
+                  labelType: NavigationRailLabelType.all,
+                  onDestinationSelected: _goToBranch,
+                ),
+                const VerticalDivider(
+                  width: 1,
+                ),
+              ],
               Expanded(
                 child: SingleChildScrollView(child: navigationShell),
               ),

@@ -11,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'blocs/app_settings/app_settings_bloc.dart';
+import 'cubits/immersive_mode/immersive_mode_cubit.dart';
 import 'layout_master.dart';
 
 /// Method that is executed when the app is started.
@@ -172,8 +173,15 @@ class _MainAppState extends State<MainApp> with WindowListener {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AppSettingsBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AppSettingsBloc>(
+          create: (context) => AppSettingsBloc(),
+        ),
+        BlocProvider<ImmersiveModeCubit>(
+          create: (context) => ImmersiveModeCubit(),
+        ),
+      ],
       child: BlocBuilder<AppSettingsBloc, AppSettingsState>(
         builder: (context, state) {
           // get the configuration for the routing of the app.
